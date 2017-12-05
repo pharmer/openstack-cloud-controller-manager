@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"regexp"
 	"sort"
@@ -49,7 +50,7 @@ import (
 )
 
 const (
-	ProviderName     = "openstack"
+	ProviderName     = "pharmer-openstack"
 	AvailabilityZone = "availability_zone"
 )
 
@@ -131,7 +132,7 @@ type Config struct {
 }
 
 func init() {
-	RegisterMetrics()
+	//RegisterMetrics()
 
 	cloudprovider.RegisterCloudProvider(ProviderName, func(config io.Reader) (cloudprovider.Interface, error) {
 		cfg, err := readConfig(config)
@@ -379,7 +380,15 @@ func nodeAddresses(srv *servers.Server) ([]v1.NodeAddress, error) {
 	for network, addrList := range addresses {
 		for _, props := range addrList {
 			var addressType v1.NodeAddressType
-			if props.IpType == "floating" || network == "public" {
+			ip := net.ParseIP(props.Addr)
+			if ip == nil {
+				continue
+			}
+			ip4 := ip.To4()
+			if ip4 == nil {
+				continue
+			}
+			if props.IpType == "floating" || network == "public" || !IsPrivateIP(ip4) {
 				addressType = v1.NodeExternalIP
 			} else {
 				addressType = v1.NodeInternalIP
