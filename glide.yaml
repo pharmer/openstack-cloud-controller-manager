@@ -1,0 +1,30 @@
+package: github.com/pharmer/openstack-cloud-controller-manager
+import:
+- package: github.com/appscode/go
+- package: github.com/golang/glog
+- package: github.com/gophercloud/gophercloud
+  version: 2bf16b94fdd9b01557c4d076e567fe5cbbe5a961
+- package: github.com/jpillora/go-ogle-analytics
+- package: github.com/mitchellh/mapstructure
+- package: github.com/prometheus/client_golang
+  version: v0.9.0-pre1
+- package: github.com/spf13/cobra
+  version: v0.0.1
+- package: github.com/spf13/pflag
+  version: v1.0.0
+- package: gopkg.in/gcfg.v1
+  version: v1.2.1
+- package: k8s.io/api
+  version: release-1.8
+- package: k8s.io/apimachinery
+  repo: https://github.com/tamalsaha/apimachinery.git
+  version: release-1.8
+  vcs: git
+- package: k8s.io/client-go
+  version: kubernetes-1.8.3-beta.0
+- package: k8s.io/apiextensions-apiserver
+  version: release-1.8
+- package: k8s.io/kubernetes
+  repo: https://github.com/appscode/kubernetes.git
+  version: v1.8.3
+  vcs: git
