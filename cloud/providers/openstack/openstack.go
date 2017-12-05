@@ -381,7 +381,14 @@ func nodeAddresses(srv *servers.Server) ([]v1.NodeAddress, error) {
 		for _, props := range addrList {
 			var addressType v1.NodeAddressType
 			ip := net.ParseIP(props.Addr)
-			if props.IpType == "floating" || network == "public" || !IsPrivateIP(ip.To4()) {
+			if ip == nil {
+				continue
+			}
+			ip4 := ip.To4()
+			if ip4 == nil {
+				continue
+			}
+			if props.IpType == "floating" || network == "public" || !IsPrivateIP(ip4) {
 				addressType = v1.NodeExternalIP
 			} else {
 				addressType = v1.NodeInternalIP
