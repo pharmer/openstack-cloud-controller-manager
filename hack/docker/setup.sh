@@ -13,7 +13,7 @@ REPO_ROOT=$GOPATH/src/github.com/pharmer/openstack-cloud-controller-manager
 source "$REPO_ROOT/hack/libbuild/common/pharmer_image.sh"
 
 APPSCODE_ENV=${APPSCODE_ENV:-dev}
-IMG=cloud-controller-manager
+IMG=openstack-cloud-controller-manager
 
 DIST=$GOPATH/src/github.com/pharmer/openstack-cloud-controller-manager/dist
 mkdir -p $DIST
@@ -23,7 +23,7 @@ fi
 
 clean() {
     pushd $GOPATH/src/github.com/pharmer/openstack-cloud-controller-manager/hack/docker
-    rm cloud-controller-manager Dockerfile
+    rm openstack-cloud-controller-manager Dockerfile
     popd
 }
 
@@ -37,8 +37,8 @@ build_binary() {
 
 build_docker() {
     pushd $GOPATH/src/github.com/pharmer/openstack-cloud-controller-manager/hack/docker
-    cp $DIST/openstack-cloud-controller-manager/openstack-cloud-controller-manager-alpine-amd64 cloud-controller-manager
-    chmod 755 cloud-controller-manager
+    cp $DIST/openstack-cloud-controller-manager/openstack-cloud-controller-manager-alpine-amd64 openstack-cloud-controller-manager
+    chmod 755 openstack-cloud-controller-manager
 
     cat >Dockerfile <<EOL
 FROM alpine
@@ -46,14 +46,14 @@ FROM alpine
 RUN set -x \
   && apk add --update --no-cache ca-certificates tzdata
 
-COPY cloud-controller-manager /usr/bin/openstack-cloud-controller-manager
+COPY openstack-cloud-controller-manager /usr/bin/openstack-cloud-controller-manager
 
-ENTRYPOINT ["cloud-controller-manager"]
+ENTRYPOINT ["openstack-cloud-controller-manager"]
 EOL
     local cmd="docker build -t pharmer/$IMG:$TAG ."
     echo $cmd; $cmd
 
-    rm cloud-controller-manager Dockerfile
+    rm openstack-cloud-controller-manager Dockerfile
     popd
 }
 
